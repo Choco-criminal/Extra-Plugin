@@ -74,7 +74,7 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
             """
 
             if config.COUPLE_IMG_URL:
-    await message.reply_video(
+    return await message.reply_video(
         video=COUPLE_IMG_URL,
         caption=TXT,
         reply_markup=InlineKeyboardMarkup(
@@ -105,7 +105,7 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
 Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
             """
             if config.COUPLE_IMG_URL:
-    await message.reply_video(
+   return await message.reply_video(
         video=COUPLE_IMG_URL,
         caption=TXT,
         reply_markup=InlineKeyboardMarkup(
