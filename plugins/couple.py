@@ -9,113 +9,101 @@ from telegraph import upload_file
 from PIL import Image, ImageDraw
 import requests
 
-from config import COUPLE_DB_URI
+from config import COUPLE_DB_URI  # Assuming you have a config file with this variable
 
-from utils import get_image, get_couple, save_couple
-from VIPMUSIC import app
+from utils import get_image, get_couple, save_couple  # Assuming these functions exist
+from VIPMUSIC import app  # Assuming this is your bot instance
 
 
-# get current date in GMT+5:30 timezone
+# Get current date and tomorrow's date in GMT+5:30 timezone
 def get_today_date():
     timezone = pytz.timezone("Asia/Kolkata")
     now = datetime.now(timezone)
     return now.strftime("%d/%m/%Y")
 
 
-# get tomorrow's date in GMT+5:30 timezone
-
-
-def get_todmorrow_date():
+def get_tomorrow_date():
     timezone = pytz.timezone("Asia/Kolkata")
     tomorrow = datetime.now(timezone) + timedelta(days=1)
     return tomorrow.strftime("%d/%m/%Y")
 
 
-# Download image from URL
+# Function to download image from URL (implement if needed)
+def download_image(url, filename):
+    response = requests.get(url, stream=True)
+    response.raise_for_status()  # Raise an exception for failed requests
+
+    with open(filename, 'wb') as f:
+        for chunk in response.iter_content(1024):
+            f.write(chunk)
 
 
 # Dates
-tomorrow = get_todmorrow_date()
+tomorrow = get_tomorrow_date()
 today = get_today_date()
 
 
 @app.on_message(filters.command(["couple", "couples"]))
 async def ctest(_, message):
-    cid = message.chat.id
+    chat_id = message.chat.id  # Use chat_id for clarity
+
     if message.chat.type == ChatType.PRIVATE:
-        return await message.reply_text("Tʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ᴡᴏʀᴋs ɪɴ ɢʀᴏᴜᴘs.")
+        return await message.reply_text("This command only works in groups.")
 
     try:
-        is_selected = await get_couple(cid, today)
+        is_selected = await get_couple(chat_id, today)
         if not is_selected:
+            # Select random users if no couple exists for today
             msg = await message.reply_text("❣️")
-            list_of_users = []
+            user_list = []
 
-            async for i in app.get_chat_members(message.chat.id, limit=50):
-                if not i.user.is_bot and not i.user.is_deleted:
-                    list_of_users.append(i.user.id)
+            async for member in app.get_chat_members(chat_id, limit=50):
+                if not member.user.is_bot and not member.user.is_deleted:
+                    user_list.append(member.user.id)
 
-            c1_id = random.choice(list_of_users)
-            c2_id = random.choice(list_of_users)
-            while c1_id == c2_id:
-                c1_id = random.choice(list_of_users)
+            user1_id = random.choice(user_list)
+            user2_id = random.choice(user_list)
+            while user1_id == user2_id:
+                user2_id = random.choice(user_list)
 
-       
+            user1 = await app.get_users(user1_id)
+            user2 = await app.get_users(user2_id)
 
-            N1 = (await app.get_users(c1_id)).mention
-            N2 = (await app.get_users(c2_id)).mention
+            text = f"""
+            **Today's Couple of the Day:
 
-            TXT = f"""
-**Tᴏᴅᴀʏ's ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ:
+            {user1.mention} + {user2.mention} = 
 
-{N1} + {N2} = 💘
-
-Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
+            Next couples will be selected on {tomorrow}!!
             """
 
+            # Use conditional logic to handle COUPLE_IMG_URL availability
             if config.COUPLE_IMG_URL:
-    return await message.reply_video(
-        video=COUPLE_IMG_URL,
-        caption=TXT,
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="Aᴅᴅ ᴍᴇ ",
-                        url=f"https://t.me/{app.username}?startgroup=true",
+                # If COUPLE_IMG_URL is set, use it as a video
+                return await message.reply_video(
+                    video=config.COUPLE_IMG_URL,
+                    caption=text,
+                    reply_markup=InlineKeyboardMarkup(
+                        [
+                            [
+                                InlineKeyboardButton(text="Add Me", url=f"https://t.me/{app.username}?startgroup=true")
+                            ]
+                        ]
                     )
-                ]
-            ]
-        ),
-    )
+                )
+            else:
+                # If COUPLE_IMG_URL is not set, use a text message
+                return await message.reply_text(text)
 
-           
         else:
+            # If a couple already exists for today, retrieve their details
             msg = await message.reply_text("❣️")
-            c1_id = int(is_selected["c1_id"])
-            c2_id = int(is_selected["c2_id"])
-            c1_name = (await app.get_users(c1_id)).first_name
-            c2_name = (await app.get_users(c2_id)).first_name
+            user1_id = int(is_selected["c1_id"])
+            user2_id = int(is_selected["c2_id"])
+            user1 = await app.get_users(user1_id)
+            user2 = await app.get_users(user2_id)
 
-            TXT = f"""
-**Tᴏᴅᴀʏ's ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ 🎉:
+            text = f"""
+            **Today's Couple of the Day :
 
-[{c1_name}](tg://openmessage?user_id={c1_id}) + [{c2_name}](tg://openmessage?user_id={c2_id}) = ❣️
-
-Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
-            """
-            if config.COUPLE_IMG_URL:
-   return await message.reply_video(
-        video=COUPLE_IMG_URL,
-        caption=TXT,
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="Aᴅᴅ ᴍᴇ ",
-                        url=f"https://t.me/{app.username}?startgroup=true",
-                    )
-                ]
-            ]
-        ),
-    )
+            [{user1.first_name}](tg://open
