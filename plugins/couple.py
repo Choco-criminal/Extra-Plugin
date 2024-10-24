@@ -123,6 +123,6 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
                     ]
                 ),
             )
-            await msg.delete()
+          
 
     
