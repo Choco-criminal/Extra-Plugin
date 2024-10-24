@@ -106,6 +106,4 @@ async def ctest(_, message):
             user1_id = int(is_selected["c1_id"])
             user2_id = int(is_selected["c2_id"])
             try:
-                user1 = await app.get_users(user1_id)
-            except Exception as e:
-                print(f"Error getting user 1: {e}")
+                user1 = await app.get_users(
