@@ -104,6 +104,9 @@ async def ctest(_, message):
             user2 = await app.get_users(user2_id)
 
             text = f"""
-            **Today's Couple of the Day :
+**Today's Couple of the Day :
 
-            [{user1.first_name}](tg://open
+[{user1.first_name}](tg://openmessage?user_id={user1.id}) + [{user2.first_name}](tg://openmessage?user_id={user2.id}) = 
+
+Next couples will be selected on {tomorrow}!!
+"""
