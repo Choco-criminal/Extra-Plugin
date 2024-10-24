@@ -69,4 +69,4 @@ async def ctest(_, message):
 
             try:
                 user1 = await app.get_users(user1_id)  # Added closing parenthesis
-                user2 = await app.get_users(user
+                user2 = await app.get_users(user2_id) 
