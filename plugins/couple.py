@@ -110,3 +110,7 @@ async def ctest(_, message):
 
 Next couples will be selected on {tomorrow}!!
 """
+
+    except Exception as e:  # Catch any exceptions that might occur
+        print(f"An error occurred: {e}")  # Log the error for debugging
+
