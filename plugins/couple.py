@@ -9,6 +9,8 @@ from telegraph import upload_file
 from PIL import Image, ImageDraw
 import requests
 
+from config import COUPLE_DB_URI
+
 from utils import get_image, get_couple, save_couple
 from VIPMUSIC import app
 
@@ -43,8 +45,6 @@ async def ctest(_, message):
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply_text("Tʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴏɴʟʏ ᴡᴏʀᴋs ɪɴ ɢʀᴏᴜᴘs.")
 
-    
-
     try:
         is_selected = await get_couple(cid, today)
         if not is_selected:
@@ -65,9 +65,6 @@ async def ctest(_, message):
             N1 = (await app.get_users(c1_id)).mention
             N2 = (await app.get_users(c2_id)).mention
 
-            
-
-            
             TXT = f"""
 **Tᴏᴅᴀʏ's ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ:
 
@@ -76,11 +73,11 @@ async def ctest(_, message):
 Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
             """
 
-            if config.START_IMG_URL:
-                return await message.reply_video(
-                    video=START_IMG_URL,
-                    caption=TXT, 
-                    reply_markup=InlineKeyboardMarkup(
+            if config.COUPLE_IMG_URL:
+            await message.reply_video(
+                video=COUPLE_IMG_URL,
+                caption=TXT, 
+                reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
@@ -91,11 +88,9 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
                     ]
                 ),
             )
-
-            
+           
         else:
             msg = await message.reply_text("❣️")
-            
             c1_id = int(is_selected["c1_id"])
             c2_id = int(is_selected["c2_id"])
             c1_name = (await app.get_users(c1_id)).first_name
@@ -108,11 +103,11 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
 
 Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
             """
-            if config.START_IMG_URL:
-                return await message.reply_video(
-                    video=START_IMG_URL,
-                    caption=TXT, 
-                    reply_markup=InlineKeyboardMarkup(
+            if config.COUPLE_IMG_URL:
+            await message.reply_video(
+               video=COUPLE_IMG_URL,
+               caption=TXT, 
+              reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
@@ -123,4 +118,3 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
                     ]
                 ),
             )
-            print(f"Error during cleanup: {cleanup_error}") 
