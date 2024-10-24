@@ -78,7 +78,7 @@ async def ctest(_, message):
             """
 
             # Use conditional logic to handle COUPLE_IMG_URL availability
-            if config.COUPLE_IMG_URL:
+            
                 # If COUPLE_IMG_URL is set, use it as a video
                 return await message.reply_video(
                     video="https://envs.sh/Abq.mp4",
