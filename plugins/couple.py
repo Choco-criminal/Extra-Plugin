@@ -9,10 +9,11 @@ from telegraph import upload_file
 from PIL import Image, ImageDraw
 import requests
 
-  # Assuming you have a config file with this variable
 
 from utils import get_image, get_couple, save_couple  # Assuming these functions exist
 from VIPMUSIC import app  # Assuming this is your bot instance
+
+import config
 
 
 # Get current date and tomorrow's date in GMT+5:30 timezone
@@ -77,11 +78,10 @@ async def ctest(_, message):
             Next couples will be selected on {tomorrow}!!
             """
 
-            # Use conditional logic to handle COUPLE_IMG_URL availability
-            
+            if config.COUPLE_IMG_URL:  # Assuming COUPLE_IMG_URL is a valid URL
                 # If COUPLE_IMG_URL is set, use it as a video
                 return await message.reply_video(
-                    video="https://envs.sh/Abq.mp4",
+                    video=config.COUPLE_IMG_URL,
                     caption=text,
                     reply_markup=InlineKeyboardMarkup(
                         [
@@ -101,16 +101,3 @@ async def ctest(_, message):
             user1_id = int(is_selected["c1_id"])
             user2_id = int(is_selected["c2_id"])
             user1 = await app.get_users(user1_id)
-            user2 = await app.get_users(user2_id)
-
-            text = f"""
-**Today's Couple of the Day :
-
-[{user1.first_name}](tg://openmessage?user_id={user1.id}) + [{user2.first_name}](tg://openmessage?user_id={user2.id}) = 
-
-Next couples will be selected on {tomorrow}!!
-"""
-
-    except Exception as e:  # Catch any exceptions that might occur
-        print(f"An error occurred: {e}")  # Log the error for debugging
-
