@@ -67,8 +67,13 @@ async def ctest(_, message):
             while user1_id == user2_id:
                 user2_id = random.choice(user_list)
 
-            user1 = await app.get_users(user1_id)
-            user2 = await app.get_users(user2_id)
+            try:
+                user1 = await app.get_users(user1_id)
+                user2 = await app.get_users(user2_id)
+            except Exception as e:
+                print(f"Error getting users: {e}")
+                # Handle the error gracefully (e.g., send a message saying user not found)
+                return await message.reply_text("An error occurred while selecting the couple. Please try again later.")
 
             text = f"""
             **Today's Couple of the Day:
@@ -100,4 +105,7 @@ async def ctest(_, message):
             msg = await message.reply_text("❣️")
             user1_id = int(is_selected["c1_id"])
             user2_id = int(is_selected["c2_id"])
-            user1 = await app.get_users(user1_id)
+            try:
+                user1 = await app.get_users(user1_id)
+            except Exception as e:
+                print(f"Error getting user 1: {e}")
