@@ -36,81 +36,71 @@ today = get_today_date()
 
 @app.on_message(filters.command(["couple", "couples"]))
 async def ctest(_, message):
-    cid = message.chat.id
+    chat_id = message.chat.id  # Use chat_id for clarity
 
     if message.chat.type == ChatType.PRIVATE:
         return await message.reply_text("This command only works in groups.")
 
     try:
-        is_selected = await get_couple(cid, today)
-
+        is_selected = await get_couple(chat_id, today)
         if not is_selected:
-            # No couple selected yet, choose randomly from non-bot members
+            # Select random users if no couple exists for today
             msg = await message.reply_text("❣️")
-            list_of_users = []
+            user_list = []
 
-            async for i in app.get_chat_members(message.chat.id, limit=50):
-                if not i.user.is_bot and not i.user.is_deleted:
-                    list_of_users.append(i.user.id)
+            async for member in app.get_chat_members(chat_id, limit=50):
+                if not member.user.is_bot and not member.user.is_deleted:
+                    user_list.append(member.user.id)
 
-            if not list_of_users:
-                # Handle the case where there are no non-bot members
-                return await message.reply_text(
-                    "There are no users to choose from. Please add some members to the group."
-                )
+            user1_id = random.choice(user_list)
+            user2_id = random.choice(user_list)
+            while user1_id == user2_id:
+                user2_id = random.choice(user_list)
 
-            c1_id = random.choice(list_of_users)
-            c2_id = random.choice(list_of_users)
+            user1 = await app.get_users(user1_id)
+            user2 = await app.get_users(user2_id)
 
-            # Ensure chosen users are different
-            while c1_id == c2_id:
-                c2_id = random.choice(list_of_users)
+            text = f"""
+            **Today's Couple of the Day:
 
-            N1 = (await app.get_users(c1_id)).mention
-            N2 = (await app.get_users(c2_id)).mention
+            {user1.mention} + {user2.mention} = 
 
-            TXT = f"""
-**Today's Couple of the Day:
-
-{N1} + {N2} = 
-
-Next couples will be selected on {tomorrow}!!**
+            Next couples will be selected on {tomorrow}!!
             """
 
-            # Handle optional couple image
+            # Use conditional logic to handle COUPLE_IMG_URL availability
             if config.COUPLE_IMG_URL:
+                # If COUPLE_IMG_URL is set, use it as a video
                 return await message.reply_video(
-                    video=COUPLE_IMG_URL,
-                    caption=TXT,
+                    video=config.COUPLE_IMG_URL,
+                    caption=text,
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
-                                InlineKeyboardButton(
-                                    text="Add Me",
-                                    url=f"https://t.me/{app.username}?startgroup=true",
-                                )
+                                InlineKeyboardButton(text="Add Me", url=f"https://t.me/{app.username}?startgroup=true")
                             ]
                         ]
-                    ),
+                    )
                 )
             else:
-                return await message.reply_text(TXT)
+                # If COUPLE_IMG_URL is not set, use a text message
+                return await message.reply_text(text)
 
         else:
-            # Couple already selected, retrieve their info
+            # If a couple already exists for today, retrieve their details
             msg = await message.reply_text("❣️")
-            c1_id = int(is_selected["c1_id"])
-            c2_id = int(is_selected["c2_id"])
-            c1_name = (await app.get_users(c1_id)).first_name
-            c2_name = (await app.get_users(c2_id)).first_name
+            user1_id = int(is_selected["c1_id"])
+            user2_id = int(is_selected["c2_id"])
+            user1 = await app.get_users(user1_id)
+            user2 = await app.get_users(user2_id)
 
-            TXT = f"""
+            text = f"""
 **Today's Couple of the Day :
 
-[{c1_name}](tg://openmessage?user_id={c1_id}) + [{c2_name}](tg://openmessage?user_id={c2_id}) = ❣️
+[{user1.first_name}](tg://openmessage?user_id={user1.id}) + [{user2.first_name}](tg://openmessage?user_id={user2.id}) = 
 
-Next couples will be selected on {tomorrow}!!**
-            """
+Next couples will be selected on {tomorrow}!!
+"""
 
-            # Handle optional couple image
-        
+    except Exception as e:  # Catch any exceptions that might occur
+        print(f"An error occurred: {e}")  # Log the error for debugging
