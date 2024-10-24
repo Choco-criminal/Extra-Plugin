@@ -113,4 +113,4 @@ Next couples will be selected on {tomorrow}!!**
             """
 
             # Handle optional couple image
-            if config.COUPLE_IMG_URL:
+        
