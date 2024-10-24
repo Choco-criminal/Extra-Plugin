@@ -9,7 +9,7 @@ from telegraph import upload_file
 from PIL import Image, ImageDraw
 import requests
 
-from config import COUPLE_IMG_URl  # Assuming COUPLE_IMG_URl is defined in config.py
+from config import COUPLE_IMG_URL  # Assuming COUPLE_IMG_URl is defined in config.py
 
 from utils import get_image, get_couple, save_couple
 from VIPMUSIC import app
