@@ -9,7 +9,7 @@ from telegraph import upload_file
 from PIL import Image, ImageDraw
 import requests
 
-from config import COUPLE_DB_URI  # Assuming you have a config file with this variable
+from config import COUPLE_IMG_URL  # Assuming you have a config file with this variable
 
 from utils import get_image, get_couple, save_couple  # Assuming these functions exist
 from VIPMUSIC import app  # Assuming this is your bot instance
