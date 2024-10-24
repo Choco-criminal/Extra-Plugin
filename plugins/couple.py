@@ -74,20 +74,21 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
             """
 
             if config.COUPLE_IMG_URL:
-            await message.reply_video(
-                video=COUPLE_IMG_URL,
-                caption=TXT, 
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                text="Aᴅᴅ ᴍᴇ 🌋",
-                                url=f"https://t.me/{app.username}?startgroup=true",
-                            )
-                        ]
-                    ]
-                ),
-            )
+    await message.reply_video(
+        video=COUPLE_IMG_URL,
+        caption=TXT,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="Aᴅᴅ ᴍᴇ ",
+                        url=f"https://t.me/{app.username}?startgroup=true",
+                    )
+                ]
+            ]
+        ),
+    )
+
            
         else:
             msg = await message.reply_text("❣️")
@@ -104,17 +105,17 @@ Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorro
 Nᴇxᴛ ᴄᴏᴜᴘʟᴇs ᴡɪʟʟ ʙᴇ sᴇʟᴇᴄᴛᴇᴅ ᴏɴ {tomorrow}!!**
             """
             if config.COUPLE_IMG_URL:
-            await message.reply_video(
-               video=COUPLE_IMG_URL,
-               caption=TXT, 
-              reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                text="Aᴅᴅ ᴍᴇ🌋",
-                                url=f"https://t.me/{app.username}?startgroup=true",
-                            )
-                        ]
-                    ]
-                ),
-            )
+    await message.reply_video(
+        video=COUPLE_IMG_URL,
+        caption=TXT,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="Aᴅᴅ ᴍᴇ ",
+                        url=f"https://t.me/{app.username}?startgroup=true",
+                    )
+                ]
+            ]
+        ),
+    )
