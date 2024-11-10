@@ -32,7 +32,7 @@ async def ctest(_, message):
     try:
         is_selected = await get_couple(cid, today)
         if not is_selected:
-            msg = await message.reply_text("❣️")
+            msg = await message.reply_text("💞")
             list_of_users = []
 
             async for i in app.get_chat_members(message.chat.id, limit=50):
@@ -62,11 +62,25 @@ New couple of the day can be chosen on {tomorrow}!!**
             # Delete the initial message
             await msg.delete()
 
-            # Specify the GIF URL
-            gif_url = "https://media.giphy.com/media/3xVLUygjT4AIxtqjS6/giphy.gif"  # Use a direct GIF URL
-            
+            # List of GIF URLs to choose from
+            gif_urls = [
+                "https://telegra.ph/file/6ae3a399b96f70b6fda79.mp4",
+                "https://telegra.ph/file/5df37a776933bb427b528.mp4",
+                "https://telegra.ph/file/85a35e5a79525b70f5904.mp4",
+                "https://telegra.ph/file/75764b093a76d08f51d2c.mp4",
+                "https://telegra.ph/file/ea951700bb21f53df70c9.mp4",
+                "https://telegra.ph/file/b74553a355a110d9a016b.mp4",
+                "https://telegra.ph/file/959dc8b67413e50f1c4a5.mp4",
+                "https://graph.org/file/2a7f857f31b32766ac6fc.mp4",
+                "https://graph.org/file/83ebf52e8bbf138620de7.mp4",
+                "https://graph.org/file/ba7699c28dab379b518ca.mp4"
+            ]
+
+            # Choose a random GIF URL
+            gif_url = random.choice(gif_urls)
+
             # Send the GIF with the message
-            await message.reply_animation(animation=gif_url, caption=TXT)
+            await message.reply_video(video=gif_url, caption=TXT)
 
             couple = {"c1_id": c1_id, "c2_id": c2_id}
             await save_couple(cid, today, couple)
@@ -87,9 +101,9 @@ New couple of the day can be chosen on {tomorrow}!!**
 New couple of the day can be chosen on {tomorrow}!!**
             """
 
-            # Specify the GIF URL
-            gif_url = "https://media.giphy.com/media/3xVLUygjT4AIxtqjS6/giphy.gif"  # Use a direct GIF URL
-            
+            # Choose a random GIF URL from the list
+            gif_url = random.choice(gif_urls)
+
             # Delete the initial message and send the GIF with the message
             await msg.delete()
             await message.reply_animation(animation=gif_url, caption=TXT)
