@@ -2,8 +2,8 @@ import random
 import requests
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from DAXXMUSIC import app
-from DAXXMUSIC.misc import SUDOERS
+from ANNIEMUSIC import app
+from ANNIEMUSIC.misc import SUDOERS
 from config import OWNER_ID
 from pyrogram.enums import ChatAction
 
