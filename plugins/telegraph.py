@@ -28,29 +28,18 @@ async def get_link_group(client, message):
 
         async def progress(current, total):
             try:
-                await text.edit_text(f"📥 Dᴏᴡɴʟᴏᴀᴅɪɴɢ... {current * 100 / total:.1f}%")
+                await text.edit_text(f" Dᴏᴡɴʟᴏᴀᴅɪɴɢ... {current * 100 / total:.1f}%")
             except Exception:
                 pass
 
         try:
             local_path = await media.download(progress=progress)
-            await text.edit_text("📤 Uᴘʟᴏᴀᴅɪɴɢ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ...")
+            await text.edit_text(" Uᴘʟᴏᴀᴅɪɴɢ ᴛᴏ ᴛᴇʟᴇɢʀᴀᴘʜ...")
 
             upload_path = api.upload_image(local_path)
 
             await text.edit_text(
-                f"🌐 | [ᴜᴘʟᴏᴀᴅᴇᴅ ʟɪɴᴋ]({upload_path})",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                "ᴜᴘʟᴏᴀᴅᴇᴅ ғɪʟᴇ",
-                                url=upload_path,
-                            )
-                        ]
-                    ]
-                ),
-            )
+                f"🌐 | {upload_path}", )
 
             try:
                 os.remove(local_path)
