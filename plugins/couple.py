@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pytz
 import random
 from pyrogram import filters
-from pyrogram.types import InputMediaAnimation
+from pyrogram.types import InputMediaVideo
 from pyrogram.enums import ChatType
 from ANNIEMUSIC import app  # Make sure you import your app correctly
 from utils import get_image, get_couple, save_couple
@@ -57,7 +57,7 @@ async def ctest(_, message):
                ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ✧Cᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ Dᴀʏ 💞
                        
-                ✧{user1.mention} + {user2.mention}
+                ✧{N1} + {N2}
               ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                Nᴇxᴛ Cᴏᴜᴘʟᴇ Sᴇʟᴇᴄᴛɪᴏɴ: {tomorrow} 🎀
             **
@@ -91,7 +91,7 @@ async def ctest(_, message):
 
         else:
             # Handle the case when a couple has already been selected
-            msg = await message.reply_text("❣️")
+            msg = await message.reply_text("💞")
             c1_id = int(is_selected["c1_id"])
             c2_id = int(is_selected["c2_id"])
             c1_name = (await app.get_users(c1_id)).first_name
@@ -103,7 +103,7 @@ async def ctest(_, message):
                ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
                 ✧Cᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ Dᴀʏ 💞
                        
-                ✧{user1.mention} + {user2.mention}
+                ✧{N2} + {N1}
                ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
                Nᴇxᴛ Cᴏᴜᴘʟᴇ Sᴇʟᴇᴄᴛɪᴏɴ: {tomorrow} 🎀
             **
@@ -114,7 +114,7 @@ async def ctest(_, message):
 
             # Delete the initial message and send the GIF with the message
             await msg.delete()
-            await message.reply_animation(animation=gif_url, caption=TXT)
+            await message.reply_video(video=gif_url, caption=TXT)
 
     except Exception as e:
         print("Error occurred:", str(e))
