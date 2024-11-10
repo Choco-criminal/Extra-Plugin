@@ -78,8 +78,3 @@ async def link_command_handler(client: Client, message: Message):
             os.remove(file_name)
 
 
-__MODULE__ = "Gʀᴏᴜᴘ Lɪɴᴋ"
-__HELP__ = """
-- `/ɢɪᴠᴇɪɴᴋ`: Gᴇᴛ ᴛʜᴇ ɪɴᴠɪᴛᴇ ɪɴᴋ ғᴏʀ ᴛʜᴇ ᴄᴜʀʀᴇɴᴛ ᴄʜᴀᴛ.
-- `/ɪɴᴋ ɢʀᴏᴜᴘ_ɪᴅ`: Gᴇᴛ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴀɴᴅ ɢᴇɴᴇʀᴀᴛᴇ ᴀɴ ɪɴᴠɪᴛᴇ ɪɴᴋ ғᴏʀ ᴛʜᴇ sᴘᴇᴄɪғɪᴇᴅ ɢʀᴏᴜᴘ ID.
-"""
